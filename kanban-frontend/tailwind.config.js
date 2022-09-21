@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  darkMode: "class",
   theme: {
     colors: {
       black: "#000112",
@@ -21,8 +22,8 @@ module.exports = {
       lg: ["18px", { lineHeight: "23px", fontWeight: "700" }],
       md: ["15px", { lineHeight: "19px", fontWeight: "700" }],
       sm: ["12px", { lineHeight: "15px", fontWeight: "700" }],
-      p: ["13px", { lineHeight: "23px", fontWeight: "700" }],
-      "p-bold": ["12px", { lineHeight: "12px", fontWeight: "400" }],
+      p: ["13px", { lineHeight: "23px", fontWeight: "400" }],
+      "p-bold": ["12px", { lineHeight: "15px", fontWeight: "700" }],
     },
     extend: {},
   },
