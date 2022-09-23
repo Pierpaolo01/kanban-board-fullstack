@@ -19,8 +19,8 @@ const Template = (args: any) => ({
   template: '<KanbanButton v-bind="args" />',
 });
 
-export const PrimaryLarge = Template.bind({});
-PrimaryLarge.args = {
+export const ButtonVariants = Template.bind({});
+ButtonVariants.args = {
   text: "Kanban Button Variants",
   variant: "primary-large",
 };

@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<propType>(), {
 
 <style scoped>
 .primary-large {
-  @apply py-4 px-5 bg-purple hover:bg-purple-hover text-md dark:bg-white;
+  @apply py-4 px-5 bg-purple hover:bg-purple-hover text-md;
 }
 
 .primary {
