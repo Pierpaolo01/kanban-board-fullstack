@@ -3,15 +3,6 @@ import KanbanButton from "../components/KanbanButton.vue";
 export default {
   Title: "KanbanButton",
   component: KanbanButton,
-  parameters: {
-    backgrounds: {
-      default: "twitter",
-      values: [
-        { name: "twitter", value: "#00aced" },
-        { name: "facebook", value: "#3b5998" },
-      ],
-    },
-  },
   argTypes: {
     variant: {
       options: ["primary-large", "primary", "secondary", "destructive"],

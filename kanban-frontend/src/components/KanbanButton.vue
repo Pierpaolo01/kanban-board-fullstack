@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<propType>(), {
 
 <style scoped>
 .primary-large {
-  @apply py-4 px-5 bg-purple hover:bg-purple-hover text-md;
+  @apply py-4 px-5 bg-purple hover:bg-purple-hover text-md dark:bg-white;
 }
 
 .primary {
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<propType>(), {
 }
 
 .secondary {
-  @apply py-2.5 px-5 bg-purple/10 text-purple hover:bg-purple/25 text-sm text-purple;
+  @apply py-2.5 px-5 bg-purple/10 text-purple hover:bg-purple/25 text-sm text-purple dark:bg-white dark:hover:bg-white;
 }
 
 .destructive {
