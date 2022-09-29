@@ -10,7 +10,10 @@ const props = withDefaults(defineProps<propType>(), {
 </script>
 
 <template>
-  <button class="rounded-full text-white font-bold" :class="props.variant">
+  <button
+    class="w-full rounded-full text-white font-bold"
+    :class="props.variant"
+  >
     {{ props.text }}
   </button>
 </template>

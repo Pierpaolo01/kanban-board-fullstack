@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 defineProps<{
-  label: string;
+  label?: string;
   selectedText: string;
 }>();
 
