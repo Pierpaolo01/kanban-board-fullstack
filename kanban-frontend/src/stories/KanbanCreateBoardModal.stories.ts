@@ -18,3 +18,4 @@ const Template = () => ({
 });
 
 export const CreateBoard = Template.bind({});
+CreateBoard.args = {};

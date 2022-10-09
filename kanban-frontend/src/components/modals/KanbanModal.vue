@@ -34,13 +34,13 @@ const clickAway = () => {
           @click="clickAway()"
         />
         <span
-          class="hidden sm:inline-block sm:h-screen sm:align-middle"
+          class="hidden sm:inline-block sm:h-screen align-middle"
           aria-hidden="true"
           >&#8203;</span
         >
         <transition name="pop" appear>
           <div
-            class="relative inline-block transform rounded-md bg-white p-6 text-left align-bottom transition-all dark:bg-dark-gray dark:text-white w-11/12 sm:max-w-md sm:p-8 sm:align-middle"
+            class="relative inline-block transform rounded-md bg-white p-6 text-left transition-all dark:bg-dark-gray dark:text-white w-11/12 sm:max-w-md sm:p-8 align-middle"
           >
             <slot />
           </div>

@@ -5,6 +5,7 @@ const props = withDefaults(
   defineProps<{
     modelValue: string;
     label?: string;
+    rows?: number;
     name?: string;
     placeholder?: string;
     error?: string;
@@ -12,6 +13,7 @@ const props = withDefaults(
   {
     name: "",
     label: "",
+    rows: 4,
     placeholder: "",
     error: "",
   }
@@ -35,7 +37,7 @@ const gsModelValue = computed({
       {{ props.label }}
     </label>
     <div class="relative">
-      <input
+      <textarea
         :ref="`kanbanInput${name}`"
         class="rounded border w-full text-black text-p bg-white/0 text-black placeholder-black/25 placeholder-p px-4 py-2 dark:placeholder-gray-medium dark:text-white"
         :class="
@@ -43,8 +45,9 @@ const gsModelValue = computed({
             ? 'border-red'
             : 'border-dark-lines/25 dark:border-light-lines/25'
         "
+        :rows="rows"
         :placeholder="props.placeholder"
-        @keyup.enter="emits('enter', $event.target.value)"
+        @keyup.enter="emits('enter', $event)"
         type="text"
         id="kanban_input"
         v-model="gsModelValue"
