@@ -25,3 +25,8 @@ export const CreateTask = Template.bind({});
 CreateTask.args = {
   type: "create",
 };
+
+export const UpdateTask = Template.bind({});
+CreateTask.args = {
+  type: "update",
+};

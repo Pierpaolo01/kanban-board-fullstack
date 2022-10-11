@@ -22,7 +22,7 @@ const showDropdown = ref(false);
     </div>
     <div
       v-if="showDropdown"
-      class="bg-light-mode absolute w-full top-16 dark:bg-dark-gray text-black dark:text-white rounded"
+      class="bg-light-mode z-50 absolute w-full top-16 dark:bg-dark-gray text-black dark:text-white rounded"
       @click="showDropdown = !showDropdown"
     >
       <slot />
