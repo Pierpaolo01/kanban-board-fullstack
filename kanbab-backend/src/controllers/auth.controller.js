@@ -25,7 +25,7 @@ const signUp = async (req, res) => {
         password: hashedPassword,
     });
 
-    const jwtToken = jwt.sign({data: username}, 'super-secret', {expiresIn: '5m'});
+    const jwtToken = jwt.sign({userId: user.id, username}, 'super-secret', {expiresIn: '1m'});
     res.status(201).send({data: jwtToken});
 }
 
@@ -44,12 +44,17 @@ const logIn = async (req, res) => {
         return;
     }
 
-    const jwtToken = jwt.sign({data: username}, 'super-secret', {expiresIn: '5m'});
+    const jwtToken = jwt.sign({userId: user.id, username}, 'super-secret', {expiresIn: '1m'});
 
     res.status(200).json({data: jwtToken})
 }
 
+const testAuth = (req, res) => {
+    res.status(200).json({data: 'authed', userId: req.userId});
+}
+
 module.exports = {
     signUp,
-    logIn
+    logIn,
+    testAuth
 }
