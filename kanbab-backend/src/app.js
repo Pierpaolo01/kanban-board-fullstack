@@ -1,10 +1,11 @@
 const express = require('express');
-const routes = require('./routes/index.routes.js')
+const router = require('./routes/index.routes.js');
 
 app = express();
 app.use(express.json());
 
-app.use('/api', routes);
+app.use('/api', router);
 
-
-app.listen(3000);
+app.listen(3000, () => {
+    console.log('listening on: localhost:3000')
+});
