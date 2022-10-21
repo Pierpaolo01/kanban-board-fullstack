@@ -22,9 +22,7 @@ const createBoard = async (req, res) => {
 }
 
 const getAllBoards = async (req, res) => {
-    console.log(req.userId)
     const boards = await boardModel.findAll({where: {UserId: req.userId}});
-
     res.status(200).json({data: boards});
 }
 
