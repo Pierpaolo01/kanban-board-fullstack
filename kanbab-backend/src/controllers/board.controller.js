@@ -21,6 +21,35 @@ const createBoard = async (req, res) => {
 
 }
 
+const getAllBoards = async (req, res) => {
+    console.log(req.userId)
+    const boards = await boardModel.findAll({where: {UserId: req.userId}});
+
+    res.status(200).json({data: boards});
+}
+
+const updateBoard = async (req, res) => {
+    const {userId} = req;
+    const {boardId} = req.params;
+
+    const board = await boardModel.findOne({where: { id: boardId }});
+
+    if (board.UserId !== userId) {
+        res.status(403).json({data: 'You cannot touch this'});
+        return;
+    }
+
+    await board.update({
+        name: req.body.name
+    });
+
+    await board.save();
+
+    res.status(200).json({data: board});
+}
+
 module.exports = {
     createBoard,
+    updateBoard,
+    getAllBoards,
 }

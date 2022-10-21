@@ -5,6 +5,6 @@ const boardRoutes = require('./board.routes.js');
 router = Router();
 
 router.use('/', authRoutes);
-router.use('/board', boardRoutes);
+router.use('/boards', boardRoutes);
 
 module.exports = router;
