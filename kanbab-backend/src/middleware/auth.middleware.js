@@ -10,7 +10,7 @@ const isAuthenticated = (req, res, next) => {
         res.status(401).json({data: 'invalid token'});
         return;
     }
-
+    
     req.userId = decodedToken.userId;
     next();
 }

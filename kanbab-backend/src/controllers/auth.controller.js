@@ -8,11 +8,11 @@ const userModel = user(db.sequelize, db.Sequelize.DataTypes);
 const signUp = async (req, res) => {
     const {username, password} = req.body;
 
-    const newUser = await userModel.findOne({
+    const user = await userModel.findOne({
         where: { username }
     });
 
-    if (newUser) {
+    if (user) {
         res.status(403).json({
             data: { message: "Username already taken" }
         });
@@ -20,12 +20,12 @@ const signUp = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await userModel.create({
+    const newUser = await userModel.create({
         username,
         password: hashedPassword,
     });
 
-    const jwtToken = jwt.sign({userId: user.id, username}, 'super-secret', {expiresIn: '1m'});
+    const jwtToken = jwt.sign({userId: newUser.id, username}, 'super-secret', {expiresIn: '15m'});
     res.status(201).send({data: jwtToken});
 }
 
@@ -44,7 +44,7 @@ const logIn = async (req, res) => {
         return;
     }
 
-    const jwtToken = jwt.sign({userId: user.id, username}, 'super-secret', {expiresIn: '1m'});
+    const jwtToken = jwt.sign({userId: user.id, username}, 'super-secret', {expiresIn: '15m'});
 
     res.status(200).json({data: jwtToken})
 }
