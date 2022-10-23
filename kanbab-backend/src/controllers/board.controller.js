@@ -1,12 +1,14 @@
 const board = require('../models/board.js');
 const user = require('../models/user.js');
+const column = require('../models/column.js');
 const db = require('../models/index.js');
 
-const boardModel = board(db.sequelize, db.Sequelize.DataTypes);
 const userModel = user(db.sequelize, db.Sequelize.DataTypes);
+const boardModel = board(db.sequelize, db.Sequelize.DataTypes);
+const columnModel = column(db.sequelize, db.Sequelize.DataTypes);
 
-boardModel.associate({User: userModel});
 userModel.associate({Board: boardModel});
+boardModel.associate({User: userModel, Column: columnModel});
 
 const createBoard = async (req, res) => {
     const {userId} = req;
@@ -17,12 +19,20 @@ const createBoard = async (req, res) => {
         name: req.body.name,
     });
 
-    res.status(201).json({data: board})
+    for await (const column of req.body.columns) {
+        await board.createColumn({
+            name: column,
+        })
+    }
 
+    const createdBoard = await boardModel.findOne({where: {id: board.id}, include: {model: columnModel}});
+
+    res.status(201).json({data: createdBoard})
 }
 
 const getAllBoards = async (req, res) => {
-    const boards = await boardModel.findAll({where: {UserId: req.userId}});
+    const boards = await boardModel.findAll({where: {UserId: req.userId}, include: {model: columnModel}});
+
     res.status(200).json({data: boards});
 }
 
@@ -30,7 +40,7 @@ const updateBoard = async (req, res) => {
     const {userId} = req;
     const {boardId} = req.params;
 
-    const board = await boardModel.findOne({where: { id: boardId }});
+    const board = await boardModel.findOne({where: { id: boardId }, include: {model: columnModel}});
 
     if (board.UserId !== userId) {
         res.status(403).json({data: 'You cannot touch this'});
@@ -41,7 +51,17 @@ const updateBoard = async (req, res) => {
         name: req.body.name
     });
 
+    for await (const column of req.body.columns) {
+        await columnModel.update({
+            name: column.name
+        },
+        {
+            where: {BoardId: board.id}
+        });
+    }
+
     await board.save();
+    await board.reload();
 
     res.status(200).json({data: board});
 }
