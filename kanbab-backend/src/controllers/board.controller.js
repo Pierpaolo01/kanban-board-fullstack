@@ -36,11 +36,33 @@ const getAllBoards = async (req, res) => {
     res.status(200).json({data: boards});
 }
 
+const getBoard = async (req, res) => {
+    const board = await boardModel.findOne({
+        where: {
+            id: req.params.boardId,
+            userId: req.userId
+        },
+        include: {model: columnModel}
+    });
+
+    if (!board) {
+        res.status(404).json({data: 'Board not found'});
+        return;
+    }
+
+    res.status(200).json({data: board});
+}
+
 const updateBoard = async (req, res) => {
     const {userId} = req;
     const {boardId} = req.params;
 
     const board = await boardModel.findOne({where: { id: boardId }, include: {model: columnModel}});
+
+    if(!board) {
+        res.status(404).json({data: 'Board does not exist'});
+        return;
+    }
 
     if (board.UserId !== userId) {
         res.status(403).json({data: 'You cannot touch this'});
@@ -52,11 +74,17 @@ const updateBoard = async (req, res) => {
     });
 
     for await (const column of req.body.columns) {
+
+        if (column.BoardId !== board.id) {
+            res.status(403).json({data: 'Column does not belong to boad'});
+            return;
+        }
+
         await columnModel.update({
             name: column.name
         },
         {
-            where: {BoardId: board.id}
+            where: {BoardId: board.id, id: column.id}
         });
     }
 
@@ -66,8 +94,29 @@ const updateBoard = async (req, res) => {
     res.status(200).json({data: board});
 }
 
+const deleteBoard = async (req, res) => {
+
+    const board = await boardModel.findOne({
+        where: {
+            id: req.params.boardId,
+            userId: req.userId,
+        }
+    });
+
+    if (!board) {
+        res.status(404).json({data: 'Board not found'});
+        return;
+    }
+
+    await board.destroy();
+
+    res.status(204);
+}
+
 module.exports = {
     createBoard,
     updateBoard,
     getAllBoards,
+    getBoard,
+    deleteBoard
 }
