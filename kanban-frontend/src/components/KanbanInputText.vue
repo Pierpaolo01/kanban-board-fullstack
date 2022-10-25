@@ -8,7 +8,7 @@ const props = withDefaults(
     name?: string;
     placeholder?: string;
     error?: string;
-    type: 'text' | 'password'
+    type?: 'text' | 'password'
   }>(),
   {
     name: "",
