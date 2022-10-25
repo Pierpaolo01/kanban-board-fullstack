@@ -8,12 +8,14 @@ const props = withDefaults(
     name?: string;
     placeholder?: string;
     error?: string;
+    type: 'text' | 'password'
   }>(),
   {
     name: "",
     label: "",
     placeholder: "",
     error: "",
+    type: "text"
   }
 );
 
@@ -45,7 +47,7 @@ const gsModelValue = computed({
         "
         :placeholder="props.placeholder"
         @keyup.enter="emits('enter', $event.target.value)"
-        type="text"
+        :type="type"
         id="kanban_input"
         v-model="gsModelValue"
       />

@@ -1,4 +1,4 @@
-import TheLayout from "../components/TheLayout.vue";
+import TheLayout from "../layouts/TheLayout.vue";
 
 export default {
   Title: "TheLayout",
