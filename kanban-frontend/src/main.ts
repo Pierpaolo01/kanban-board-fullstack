@@ -10,12 +10,11 @@ import "./assets/main.css";
 const app = createApp(App);
 
 axios.defaults.baseURL = 'http://localhost:3000';
-axios.defaults.withCredentials = true;
 
 
 axios.interceptors.request.use((request) => {
     const token = localStorage.getItem('token');
-
+    console.log(token)
     request.headers.Authorization = token ? `Bearer ${token}` : null;
     return request;
 })

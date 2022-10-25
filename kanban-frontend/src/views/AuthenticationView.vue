@@ -14,7 +14,7 @@ const authenticationForm = reactive<AuthenticationForm>({
 const signUp = async () => {
   try {
     const response = await UserService.signUp(authenticationForm);
-    localStorage.setItem('token', response.data);
+    localStorage.setItem('token', response.data.data);
 
   } catch (e) {
     console.log(e);
