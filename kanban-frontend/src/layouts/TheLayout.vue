@@ -4,13 +4,32 @@ import KanbanButton from "../components/KanbanButton.vue";
 import IconChevronDown from "../assets/icons/IconChevronDown.vue";
 import IconBoard from "../assets/icons/IconBoard.vue";
 import TheMobileSidebar from "../components/TheMobileSidebar.vue";
-import { ref } from "vue";
+import {onMounted, reactive, ref} from "vue";
+import KanbanService from "../services/kanbanService"
+import type {KanbanBoard} from "../services/KanbanBoard"
 
-const toggleMobileNav = ref(false);
+const state = reactive<{
+  toggleMobileNav: boolean;
+  boards: Array<KanbanBoard>;
+}>({
+  toggleMobileNav: false,
+  boards: [],
+});
+
+const getAllBoards = async () => {
+  try {
+    const response = await KanbanService.getAllBoards();
+    state.boards = response.data.data;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+onMounted(() => getAllBoards());
 </script>
 
 <template>
-  <div class="flex flex-row-reverse min-h-full relative">
+  <div class="flex flex-row-reverse h-full relative">
     <header
       class="px-4 py-6 w-full h-16 bg-white dark:bg-dark-gray flex items-center justify-between"
     >
@@ -25,16 +44,16 @@ const toggleMobileNav = ref(false);
         </div>
         <h1
           class="text-lg cursor-pointer text-center text-black dark:text-white flex items-center"
-          @click="toggleMobileNav = !toggleMobileNav"
+          @click="state.toggleMobileNav = !state.toggleMobileNav"
         >
           TODO Board name
           <IconChevronDown
             class="ml-2"
-            :class="toggleMobileNav ? 'rotate-180' : ''"
+            :class="state.toggleMobileNav ? 'rotate-180' : ''"
           />
         </h1>
         <TheMobileSidebar
-          v-if="toggleMobileNav"
+          v-if="state.toggleMobileNav"
           class="absolute top-16 left-8"
         />
       </div>
@@ -58,18 +77,18 @@ const toggleMobileNav = ref(false);
           kanban
         </h1>
       </div>
-      <div class="mt-2 p-6 cursor-pointer">
-        <h1 class="uppercase mb-5 text-sm">all boards (6)</h1>
+      <div class="mt-2 p-6">
+        <h1 class="uppercase mb-5 text-sm">all boards {{state.boards.length}}</h1>
         <div>
           <router-link
-            v-for="(board, index) in 6"
+            v-for="board in state.boards"
             :key="board"
-            to="TODO"
+          to="{name: 'board', params: {boardId: board.id}}"
             class="-ml-6 pl-6 text-md py-3 flex rounded-r-full items-center space-x-4 cursor-pointer hover:text-white hover:bg-purple-hover"
             active-class="bg-purple rounded-r-full text-white"
           >
             <IconBoard />
-            <span> board {{ index }} </span>
+            <span> {{board.name}} </span>
           </router-link>
         </div>
         <button class="py-3 flex items-center space-x-4">

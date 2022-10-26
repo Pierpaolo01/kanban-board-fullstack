@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AxiosPromise } from "axios";
-import type {AuthenticationForm} from "../types/AuthenticationForm.ts";
-import type {ApiResponse} from "../types/ApiResponse.ts";
+import type {ApiResponse} from "../types/ApiResponse";
+import type {AuthenticationForm} from "../types/AuthenticationForm";
 
 export default class UserService {
     public static signUp(payload: AuthenticationForm): AxiosPromise<ApiResponse<string>> {

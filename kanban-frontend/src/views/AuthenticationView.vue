@@ -5,6 +5,9 @@ import KanbanInputText from '../components/KanbanInputText.vue'
 import KanbanButton from "../components/KanbanButton.vue";
 import type {AuthenticationForm} from "../types/AuthenticationForm.ts";
 import UserService from "@/services/userService";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 const authenticationForm = reactive<AuthenticationForm>({
   username: "",
@@ -15,7 +18,7 @@ const signUp = async () => {
   try {
     const response = await UserService.signUp(authenticationForm);
     localStorage.setItem('token', response.data.data);
-
+    await router.push({name: 'boards'});
   } catch (e) {
     console.log(e);
   }
@@ -24,7 +27,8 @@ const signUp = async () => {
 const login = async () => {
   try {
     const response = await UserService.login(authenticationForm);
-    localStorage.setItem('token', response.data);
+    localStorage.setItem('token', response.data.data);
+    await router.push({name: 'boards'});
   } catch (e) {
     console.log(e);
   }
@@ -33,7 +37,7 @@ const login = async () => {
 
 <template>
   <main>
-    <kanban-modal :model-value="true" has-click-away="false">
+    <kanban-modal :model-value="true" :has-click-away="false">
       <form @submit.prevent class="space-y-6">
         <h1 class="text-xl text-dark-lines dark:text-white">
           Sign-up or Login

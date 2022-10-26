@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface propType {
   text: string;
-  variant: "primary-large" | "primary" | "secondary" | "destructive";
+  variant?: "primary-large" | "primary" | "secondary" | "destructive";
 }
 
 const props = withDefaults(defineProps<propType>(), {

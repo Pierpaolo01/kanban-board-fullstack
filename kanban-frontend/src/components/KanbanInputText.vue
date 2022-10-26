@@ -33,7 +33,7 @@ const gsModelValue = computed({
 
 <template>
   <div class="flex flex-col space-y-2 w-full">
-    <label class="text-dark-lines text-sm dark:text-white" for="kanban_input">
+    <label class="text-dark-lines text-sm dark:text-white">
       {{ props.label }}
     </label>
     <div class="relative">
@@ -48,7 +48,6 @@ const gsModelValue = computed({
         :placeholder="props.placeholder"
         @keyup.enter="emits('enter', $event.target.value)"
         :type="type"
-        id="kanban_input"
         v-model="gsModelValue"
       />
       <span v-if="props.error" class="text-red">
