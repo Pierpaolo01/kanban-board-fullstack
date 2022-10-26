@@ -14,4 +14,5 @@ const Template = (args: any) => ({
 });
 
 export const MobileNavigation = Template.bind({});
+// @ts-ignore
 MobileNavigation.args = {};

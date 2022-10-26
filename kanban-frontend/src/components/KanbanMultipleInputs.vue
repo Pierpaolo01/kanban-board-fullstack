@@ -19,8 +19,8 @@ const gsModelValue = computed({
     return props.modelValue;
   },
   set(value) {
-    emits('update:modelValue', value);
-  }
+    emits("update:modelValue", value);
+  },
 });
 
 const addNewValue = ref(false);
@@ -44,12 +44,8 @@ const newValue = ref("");
           @enter="gsModelValue[index] = $event"
         />
         <button class="flex items-center" @click="emits('remove', index)">
-          <span>
-          Remove
-          </span>
-          <IconCross
-            class="ml-2 cursor-pointer"
-          />
+          <span> Remove </span>
+          <IconCross class="ml-2 cursor-pointer" />
         </button>
       </div>
     </div>
@@ -67,19 +63,16 @@ const newValue = ref("");
           newValue = '';
         "
       />
-      <button class="flex items-center"
-      @click="
-      emits('add', newValue);
-      addNewValue = false;
-      newValue = '';
-      "
+      <button
+        class="flex items-center"
+        @click="
+          emits('add', newValue);
+          addNewValue = false;
+          newValue = '';
+        "
       >
-        <span>
-          Add
-        </span>
-        <Iconplus
-          class="ml-2 cursor-pointer"
-          />
+        <span> Add </span>
+        <Iconplus class="ml-2 cursor-pointer" />
       </button>
     </div>
     <KanbanButton

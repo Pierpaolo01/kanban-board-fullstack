@@ -4,9 +4,9 @@ import { reactive } from "vue";
 import KanbanButton from "../KanbanButton.vue";
 import KanbanMultipleInputs from "../KanbanMultipleInputs.vue";
 import KanbanService from "../../services/kanbanService";
-import type {KanbanBoardForm} from "../../types/KanbanBoard"
+import type { KanbanBoardForm } from "@/types/kanbanBoard";
 
-const emits = defineEmits(['boardCreated']);
+const emits = defineEmits(["boardCreated"]);
 
 const board = reactive<KanbanBoardForm>({
   name: "",
@@ -16,11 +16,11 @@ const board = reactive<KanbanBoardForm>({
 const createBoard = async () => {
   try {
     await KanbanService.createBoard(board);
-    emits('boardCreated')
+    emits("boardCreated");
   } catch (e) {
     console.log(e);
   }
-}
+};
 </script>
 
 <template>

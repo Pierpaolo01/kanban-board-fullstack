@@ -18,4 +18,5 @@ const Template = () => ({
 });
 
 export const CreateBoard = Template.bind({});
+// @ts-ignore
 CreateBoard.args = {};

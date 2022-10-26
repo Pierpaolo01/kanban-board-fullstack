@@ -14,12 +14,14 @@ const Template = (args: any) => ({
 });
 
 export const InputEmpty = Template.bind({});
+// @ts-ignore
 InputEmpty.args = {
   label: "This is empty",
   placeholder: "Write something",
 };
 
 export const Input = Template.bind({});
+// @ts-ignore
 Input.args = {
   label: "This is input",
   placeholder: "Write something",
@@ -27,6 +29,7 @@ Input.args = {
 };
 
 export const InputError = Template.bind({});
+// @ts-ignore
 InputError.args = {
   label: "This is input",
   placeholder: "Write something",

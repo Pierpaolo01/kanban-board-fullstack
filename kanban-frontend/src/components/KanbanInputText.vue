@@ -8,18 +8,22 @@ const props = withDefaults(
     name?: string;
     placeholder?: string;
     error?: string;
-    type?: 'text' | 'password'
+    type?: "text" | "password";
   }>(),
   {
     name: "",
     label: "",
     placeholder: "",
     error: "",
-    type: "text"
+    type: "text",
   }
 );
 
 const emits = defineEmits(["update:modelValue", "enter"]);
+
+const keypressEnter = (event: any) => {
+  emits("enter", (event.target as HTMLInputElement).value);
+};
 
 const gsModelValue = computed({
   get() {
@@ -46,7 +50,7 @@ const gsModelValue = computed({
             : 'border-dark-lines/25 dark:border-light-lines/25'
         "
         :placeholder="props.placeholder"
-        @keyup.enter="emits('enter', $event.target.value)"
+        @keyup.enter="keypressEnter($event.target)"
         :type="type"
         v-model="gsModelValue"
       />

@@ -12,6 +12,7 @@ const Template = (args: any) => ({
     const isOpen = true;
     return {
       isOpen,
+      args,
     };
   },
   template: `
@@ -22,11 +23,13 @@ const Template = (args: any) => ({
 });
 
 export const CreateTask = Template.bind({});
+// @ts-ignore
 CreateTask.args = {
   type: "create",
 };
 
 export const UpdateTask = Template.bind({});
+// @ts-ignore
 CreateTask.args = {
   type: "update",
 };

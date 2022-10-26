@@ -20,6 +20,7 @@ const Template = (args: any) => ({
 });
 
 export const ButtonVariants = Template.bind({});
+// @ts-ignore
 ButtonVariants.args = {
   text: "Kanban Button Variants",
   variant: "primary-large",

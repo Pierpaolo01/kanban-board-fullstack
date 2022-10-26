@@ -1,5 +1,5 @@
 export interface KanbanColumn {
-    id: number;
-    name: string;
-    BoardId: number;
+  id: number;
+  name: string;
+  BoardId: number;
 }

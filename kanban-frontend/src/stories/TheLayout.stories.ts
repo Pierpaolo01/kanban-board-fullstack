@@ -14,4 +14,5 @@ const Template = (args: any) => ({
 });
 
 export const MainLayout = Template.bind({});
-TheLayout.args = {};
+// @ts-ignore
+MainLayout.args = {};
