@@ -9,9 +9,10 @@ import KanbanService from "../services/kanbanService";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import KanbanModalBoardCreate from "../components/modals/KanbanModalBoardCreate.vue";
 import KanbanModal from "../components/modals/KanbanModal.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 const state = reactive<{
   toggleMobileNav: boolean;
@@ -32,6 +33,10 @@ const getAllBoards = async () => {
 
     if (response.data.data.length) {
       state.selectedBoard = response.data.data[0];
+      await router.push({
+        name: "board",
+        params: { boardId: response.data.data[0].id },
+      });
     }
   } catch (e) {
     console.log(e);
@@ -101,7 +106,7 @@ onMounted(() => getAllBoards());
           <router-link
             v-for="board in state.boards"
             :key="board.id"
-            to="todo"
+            :to="{ name: 'board', params: { boardId: board.id } }"
             class="-ml-6 pl-6 text-md py-3 flex rounded-r-full items-center space-x-4 cursor-pointer hover:text-white hover:bg-purple-hover"
             active-class="bg-purple rounded-r-full text-white"
           >

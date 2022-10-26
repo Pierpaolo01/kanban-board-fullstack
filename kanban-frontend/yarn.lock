@@ -11853,6 +11853,11 @@
     "@vue/server-renderer" "3.2.39"
     "@vue/shared" "3.2.39"
 
+"vue3-draggable@^2.0.9":
+  "integrity" "sha512-OpjCSzGpkXsraBJzYrMS5LKXHThb0r+V8zItUNOZF7gZgdH0Cg2IL3XT0x4IhJdMaLvzRZCXE6UQj/459npJIw=="
+  "resolved" "https://registry.npmjs.org/vue3-draggable/-/vue3-draggable-2.0.9.tgz"
+  "version" "2.0.9"
+
 "wait-on@6.0.0":
   "integrity" "sha512-tnUJr9p5r+bEYXPUdRseolmz5XqJTTj98JgOsfBn7Oz2dxfE2g3zw1jE+Mo8lopM3j3et/Mq1yW7kKX6qw7RVw=="
   "resolved" "https://registry.npmjs.org/wait-on/-/wait-on-6.0.0.tgz"

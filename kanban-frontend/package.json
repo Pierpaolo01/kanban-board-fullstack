@@ -2,7 +2,7 @@
   "name": "kanban-frontend",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8000",
     "build": "run-p type-check build-only",
     "preview": "vite preview --port 4173",
     "test:e2e": "start-server-and-test preview http://localhost:4173/ 'cypress open --e2e'",
@@ -20,7 +20,8 @@
     "pinia": "^2.0.21",
     "vite-tsconfig-paths": "^3.5.0",
     "vue": "^3.2.38",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.5",
+    "vue3-draggable": "^2.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.19.1",
