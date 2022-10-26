@@ -9,7 +9,7 @@ const props = withDefaults(
   }
 );
 
-const emits = defineEmits("update:modelValue");
+const emits = defineEmits(["update:modelValue"]);
 
 const clickAway = () => {
   if (props.hasClickAway) emits("update:modelValue");

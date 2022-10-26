@@ -26,6 +26,7 @@ const Template = (args: any) => ({
 });
 
 export const Dropdown = Template.bind({});
+// @ts-ignore
 Dropdown.args = {
   label: "Kanban dropdown",
 };

@@ -8,16 +8,22 @@ const props = withDefaults(
     name?: string;
     placeholder?: string;
     error?: string;
+    type?: "text" | "password";
   }>(),
   {
     name: "",
     label: "",
     placeholder: "",
     error: "",
+    type: "text",
   }
 );
 
 const emits = defineEmits(["update:modelValue", "enter"]);
+
+const keypressEnter = (event: any) => {
+  emits("enter", (event.target as HTMLInputElement).value);
+};
 
 const gsModelValue = computed({
   get() {
@@ -31,7 +37,7 @@ const gsModelValue = computed({
 
 <template>
   <div class="flex flex-col space-y-2 w-full">
-    <label class="text-dark-lines text-sm dark:text-white" for="kanban_input">
+    <label class="text-dark-lines text-sm dark:text-white">
       {{ props.label }}
     </label>
     <div class="relative">
@@ -44,9 +50,8 @@ const gsModelValue = computed({
             : 'border-dark-lines/25 dark:border-light-lines/25'
         "
         :placeholder="props.placeholder"
-        @keyup.enter="emits('enter', $event.target.value)"
-        type="text"
-        id="kanban_input"
+        @keyup.enter="keypressEnter($event.target)"
+        :type="type"
         v-model="gsModelValue"
       />
       <span v-if="props.error" class="text-red">

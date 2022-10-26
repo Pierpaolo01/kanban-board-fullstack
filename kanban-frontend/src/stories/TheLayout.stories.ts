@@ -1,4 +1,4 @@
-import TheLayout from "../components/TheLayout.vue";
+import TheLayout from "../layouts/TheLayout.vue";
 
 export default {
   Title: "TheLayout",
@@ -14,4 +14,5 @@ const Template = (args: any) => ({
 });
 
 export const MainLayout = Template.bind({});
-TheLayout.args = {};
+// @ts-ignore
+MainLayout.args = {};

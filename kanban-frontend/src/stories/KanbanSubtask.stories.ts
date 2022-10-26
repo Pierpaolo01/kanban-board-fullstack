@@ -14,12 +14,14 @@ const Template = (args: any) => ({
 });
 
 export const ActiveSubtask = Template.bind({});
+// @ts-ignore
 ActiveSubtask.args = {
   "is-checked": false,
   text: "TODO subtask",
 };
 
 export const FinishedSubtask = Template.bind({});
+// @ts-ignore
 FinishedSubtask.args = {
   isChecked: true,
   text: "DONE subtask",
