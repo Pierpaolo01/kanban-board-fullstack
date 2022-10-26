@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import IconCross from "./icons/IconCross.vue";
-import IconMinus from "./icons/IconMinus.vue";
+import Iconplus from "./icons/IconPlus.vue";
 import KanbanButton from "./KanbanButton.vue";
 import KanbanInputText from "./KanbanInputText.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
-defineProps<{
+const props = defineProps<{
   modelValue: Array<string>;
   label: string;
   placeholder: string;
@@ -14,9 +14,14 @@ defineProps<{
 
 const emits = defineEmits(["update:modelValue", "remove", "add"]);
 
-const update = (item: string, index: number) => {
-  emits("update:modelValue", { item, index });
-};
+const gsModelValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(value) {
+    emits('update:modelValue', value);
+  }
+});
 
 const addNewValue = ref(false);
 const newValue = ref("");
@@ -30,18 +35,22 @@ const newValue = ref("");
       </label>
       <div
         class="flex items-center justify-between space-x-4 space-y-3"
-        v-for="(item, index) in modelValue"
+        v-for="(_, index) in gsModelValue"
         :key="index"
       >
         <KanbanInputText
           :placeholder="placeholder"
-          :model-value="item"
-          @enter="update($event, index)"
+          v-model="gsModelValue[index]"
+          @enter="gsModelValue[index] = $event"
         />
-        <IconCross
-          class="mt-2 cursor-pointer"
-          @click="emits('remove', index)"
-        />
+        <button class="flex items-center" @click="emits('remove', index)">
+          <span>
+          Remove
+          </span>
+          <IconCross
+            class="ml-2 cursor-pointer"
+          />
+        </button>
       </div>
     </div>
     <div
@@ -58,13 +67,20 @@ const newValue = ref("");
           newValue = '';
         "
       />
-      <IconMinus
-        class="mt-2 cursor-pointer"
-        @click="
-          addNewValue = false;
-          newValue = '';
-        "
-      />
+      <button class="flex items-center"
+      @click="
+      emits('add', newValue);
+      addNewValue = false;
+      newValue = '';
+      "
+      >
+        <span>
+          Add
+        </span>
+        <Iconplus
+          class="ml-2 cursor-pointer"
+          />
+      </button>
     </div>
     <KanbanButton
       class="mt-3"

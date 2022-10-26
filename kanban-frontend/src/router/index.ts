@@ -13,11 +13,11 @@ const router = createRouter({
       name: "boards",
       component: () => import("../views/KanbanBoardView.vue"),
       children: [
-        {
-         path: ":boardId",
-         name: "board",
-         component: () => import(""),
-        }
+//         {
+//          path: ":boardId",
+//          name: "board",
+//          component: () => import(""),
+//         }
       ],
     },
   ],
