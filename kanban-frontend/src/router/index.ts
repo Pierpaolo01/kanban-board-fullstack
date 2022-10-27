@@ -16,7 +16,7 @@ const router = createRouter({
         {
           path: ":boardId",
           name: "board",
-          component: () => import("@/views/KanbanBoard.vue"),
+          component: () => import("../views/KanbanBoard.vue"),
         },
       ],
     },

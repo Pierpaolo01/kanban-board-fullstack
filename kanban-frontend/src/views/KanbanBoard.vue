@@ -4,33 +4,14 @@ import KanbanService from "@/services/kanbanService";
 import { onMounted, reactive } from "vue";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 //@ts-ignore
-import Draggable from "vue3-draggable";
+// import Draggable from "vue3-draggable";
 
 const route = useRoute();
 
 const state = reactive<{
   board: KanbanBoard | null;
-  test: any[];
 }>({
   board: null,
-  test: [
-    {
-      id: 1,
-      name: "test board 1",
-      columns: [
-        {
-          id: 1,
-          name: "column 1",
-          subtask: ["5", "4"],
-        },
-        {
-          id: 2,
-          name: "column 2",
-          subtask: ["1", "2"],
-        },
-      ],
-    },
-  ],
 });
 
 const fetchBoard = async () => {
@@ -42,28 +23,40 @@ const fetchBoard = async () => {
   }
 };
 
-onMounted(() => fetchBoard());
+const randomHex = () => {
+  return `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padEnd(6, "0")}`;
+};
+
+onMounted(async () => fetchBoard());
 </script>
 
 <template>
-  <div v-if="state.board" class="flex space-x-12">
-    <div v-for="column in state.test[0].columns" :key="column.id">
-      <div class="text-white">
-        <h1>{{ column.name }}</h1>
-        <draggable v-model="column.subtask">
-          <template v-slot:item="{ item }">
-            <div>
-              {{ item }}
-            </div>
-          </template>
-        </draggable>
+  <div class="overflow-x-auto">
+    <div
+      v-if="state.board"
+      class="flex space-x-12 text-gray-medium max-w-[0px]"
+    >
+      <div v-for="column in state.board.Columns" :key="column.id">
+        <div>
+          <h1 class="flex items-center mb-6">
+            <span
+              class="w-4 h-4 rounded-full mr-2"
+              :style="{ background: randomHex() }"
+            />
+            {{ column.name }} (420)
+          </h1>
+          <div class="w-72 p-6 bg-white">fake subtask</div>
+          <!--        <draggable v-model="column.subtask">-->
+          <!--          <template v-slot:item="{ item }">-->
+          <!--            <div>-->
+          <!--              {{ item }}-->
+          <!--            </div>-->
+          <!--          </template>-->
+          <!--        </draggable>-->
+        </div>
       </div>
-    </div>
-    <div class="bg-black text-white">
-      {{ state.test[0].columns[0] }}
-      {{ state.test[0].columns[1] }}
     </div>
   </div>
 </template>
-
-<style scoped></style>
