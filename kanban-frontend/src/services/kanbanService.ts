@@ -14,4 +14,10 @@ export default class KanbanService {
   ): AxiosPromise<ApiResponse<KanbanBoard>> {
     return axios.post("/api/boards/create", payload);
   }
+
+  public static getBoard(
+    boardId: string | number
+  ): AxiosPromise<ApiResponse<KanbanBoard>> {
+    return axios.get(`/api/boards/${boardId}`);
+  }
 }

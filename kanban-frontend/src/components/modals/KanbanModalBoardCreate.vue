@@ -5,6 +5,9 @@ import KanbanButton from "../KanbanButton.vue";
 import KanbanMultipleInputs from "../KanbanMultipleInputs.vue";
 import KanbanService from "../../services/kanbanService";
 import type { KanbanBoardForm } from "@/types/kanbanBoard";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const emits = defineEmits(["boardCreated"]);
 
@@ -15,8 +18,12 @@ const board = reactive<KanbanBoardForm>({
 
 const createBoard = async () => {
   try {
-    await KanbanService.createBoard(board);
+    const response = await KanbanService.createBoard(board);
     emits("boardCreated");
+    await router.push({
+      name: "board",
+      params: { boardId: response.data.data.id },
+    });
   } catch (e) {
     console.log(e);
   }

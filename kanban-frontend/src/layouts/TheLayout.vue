@@ -4,14 +4,15 @@ import KanbanButton from "../components/KanbanButton.vue";
 import IconChevronDown from "../assets/icons/IconChevronDown.vue";
 import IconBoard from "../assets/icons/IconBoard.vue";
 import TheMobileSidebar from "../components/TheMobileSidebar.vue";
-import { onMounted, reactive } from "vue";
+import { computed, onMounted, reactive } from "vue";
 import KanbanService from "../services/kanbanService";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import KanbanModalBoardCreate from "../components/modals/KanbanModalBoardCreate.vue";
 import KanbanModal from "../components/modals/KanbanModal.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 const state = reactive<{
   toggleMobileNav: boolean;
@@ -30,20 +31,32 @@ const getAllBoards = async () => {
     const response = await KanbanService.getAllBoards();
     state.boards = response.data.data;
 
-    if (response.data.data.length) {
-      state.selectedBoard = response.data.data[0];
+    if (!route.params.boardId && state.boards.length) {
+      await router.push({
+        name: "board",
+        params: { boardId: state.boards[0].id },
+      });
     }
   } catch (e) {
     console.log(e);
   }
 };
 
+const gsCurrentBoard = computed({
+  get() {
+    return state.boards.find(
+      (board) => board.id === Number(route.params.boardId)
+    );
+  },
+  set() {},
+});
+
 onMounted(() => getAllBoards());
 </script>
 
 <template>
-  <div class="flex flex-row-reverse h-full relative">
-    <div class="w-full">
+  <div class="flex flex-row-reverse justify-between w-full h-full relative">
+    <div class="bg-light-mode w-full flex-shrink-1">
       <header
         class="px-4 py-6 h-16 bg-white dark:bg-dark-gray flex items-center justify-between"
       >
@@ -60,7 +73,7 @@ onMounted(() => getAllBoards());
             class="text-lg cursor-pointer text-center text-black dark:text-white flex items-center"
             @click="state.toggleMobileNav = !state.toggleMobileNav"
           >
-            {{ state.selectedBoard ? state.selectedBoard.name : "" }}
+            {{ gsCurrentBoard ? gsCurrentBoard.name : "" }}
             <IconChevronDown
               class="ml-2"
               :class="state.toggleMobileNav ? 'rotate-180' : ''"
@@ -74,16 +87,18 @@ onMounted(() => getAllBoards());
         <h1
           class="text-lg hidden md:flex text-black dark:text-white items-center"
         >
-          {{ state.selectedBoard ? state.selectedBoard.name : "" }}
+          {{ gsCurrentBoard ? gsCurrentBoard.name : "" }}
         </h1>
         <div>
           <KanbanButton v-if="route.name === 'board'" text="+" />
         </div>
       </header>
-      <slot class="h-full w-full" />
+      <div class="p-6 h-full overflow-x-scroll">
+        <slot />
+      </div>
     </div>
-    <aside
-      class="w-[260px] text-gray-medium bg-white dark:bg-dark-gray hidden md:block h-full"
+    <div
+      class="min-w-[260px] text-gray-medium bg-white dark:bg-dark-gray h-full"
     >
       <div
         class="flex items-center space-x-4 p-4 h-16 border-r border-light-lines dark:border-dark-lines"
@@ -101,9 +116,10 @@ onMounted(() => getAllBoards());
           <router-link
             v-for="board in state.boards"
             :key="board.id"
-            to="todo"
+            :to="{ name: 'board', params: { boardId: board.id } }"
             class="-ml-6 pl-6 text-md py-3 flex rounded-r-full items-center space-x-4 cursor-pointer hover:text-white hover:bg-purple-hover"
             active-class="bg-purple rounded-r-full text-white"
+            @click="state.selectedBoard = board"
           >
             <IconBoard />
             <span> {{ board.name }} </span>
@@ -117,7 +133,7 @@ onMounted(() => getAllBoards());
           <span class="text-purple text-md">+ create board</span>
         </button>
       </div>
-    </aside>
+    </div>
   </div>
   <kanban-modal v-model="state.openCreateBoardModal" :has-click-away="false">
     <KanbanModalBoardCreate
