@@ -10,3 +10,4 @@ router.use('/boards', boardRoutes);
 router.use('/boards', columnRoutes);
 
 module.exports = router;
+

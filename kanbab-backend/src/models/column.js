@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Board);
+      this.hasMany(models.Task);
     }
   }
   Column.init({
@@ -21,3 +22,4 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Column;
 };
+

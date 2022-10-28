@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('tasks', {
+    await queryInterface.createTable('Tasks', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -18,6 +18,16 @@ module.exports = {
       subtasks: {
         type: Sequelize.JSON
       },
+      columnId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Columns',
+          key: 'id',
+          as: 'columnId'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -29,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('tasks');
+    await queryInterface.dropTable('Tasks');
   }
 };

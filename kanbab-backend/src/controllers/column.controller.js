@@ -2,13 +2,15 @@ const db = require('../models/index.js');
 const board = require('../models/board.js');
 const user = require('../models/user.js');
 const column = require('../models/column.js');
+const task = require('../models/task.js');
 
 
 const columnModel = column(db.sequelize, db.Sequelize.DataTypes);
 const boardModel = board(db.sequelize, db.Sequelize.DataTypes);
 const userModel = user(db.sequelize, db.Sequelize.DataTypes);
+const taskModel = task(db.sequelize, db.Sequelize.DataTypes);
 
-columnModel.associate({Board: boardModel});
+columnModel.associate({Board: boardModel, Task: taskModel});
 boardModel.associate({User: userModel, Column: columnModel});
 
 const deleteColumn = async (req, res) => {
