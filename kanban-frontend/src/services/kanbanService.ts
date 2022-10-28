@@ -20,4 +20,15 @@ export default class KanbanService {
   ): AxiosPromise<ApiResponse<KanbanBoard>> {
     return axios.get(`/api/boards/${boardId}`);
   }
+
+  public static updateBoard(
+    boardId: number | string,
+    payload: KanbanBoard
+  ): AxiosPromise<ApiResponse<KanbanBoard>> {
+    return axios.put(`/api/boards/${boardId}`, payload);
+  }
+
+  public static deleteColumn(id: number) {
+    return axios.delete("todo");
+  }
 }

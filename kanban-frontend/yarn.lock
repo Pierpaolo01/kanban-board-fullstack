@@ -2523,7 +2523,14 @@
   "resolved" "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   "version" "7.0.11"
 
-"@types/lodash@^4.14.167":
+"@types/lodash.clonedeep@^4.5.7":
+  "integrity" "sha512-ccNqkPptFIXrpVqUECi60/DFxjNKsfoQxSQsgcBJCX/fuX1wgyQieojkcWH/KpE3xzLoWN/2k+ZeGqIN3paSvw=="
+  "resolved" "https://registry.npmjs.org/@types/lodash.clonedeep/-/lodash.clonedeep-4.5.7.tgz"
+  "version" "4.5.7"
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*", "@types/lodash@^4.14.167":
   "integrity" "sha512-evMDG1bC4rgQg4ku9tKpuMh5iBNEwNa3tf9zRHdP1qlv+1WUg44xat4IxCE14gIpZRGUUWAx2VhItCZc25NfMA=="
   "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.185.tgz"
   "version" "4.14.185"
@@ -7814,6 +7821,11 @@
   "version" "6.0.0"
   dependencies:
     "p-locate" "^5.0.0"
+
+"lodash.clonedeep@^4.5.0":
+  "integrity" "sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ=="
+  "resolved" "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz"
+  "version" "4.5.0"
 
 "lodash.debounce@^4.0.8":
   "integrity" "sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow=="

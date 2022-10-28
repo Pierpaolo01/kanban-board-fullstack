@@ -7,6 +7,6 @@ router = Router();
 
 router.use('/', authRoutes);
 router.use('/boards', boardRoutes);
-router.use('/board/column', columnRoutes);
+router.use('/boards', columnRoutes);
 
 module.exports = router;
