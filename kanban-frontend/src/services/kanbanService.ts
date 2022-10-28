@@ -33,6 +33,6 @@ export default class KanbanService {
   }
 
   public static addNewColumn(boardId: number, name: string) {
-    return axios.post(`/api/board/${boardId}/column`, { name });
+    return axios.post(`/api/boards/${boardId}/column`, { name });
   }
 }

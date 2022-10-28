@@ -76,7 +76,7 @@ const updateBoard = async (req, res) => {
     for await (const column of req.body.Columns) {
 
         if (column.BoardId !== board.id) {
-            res.status(403).json({data: 'Column does not belong to boad'});
+            res.status(403).json({data: 'Column does not belong to board'});
             return;
         }
 

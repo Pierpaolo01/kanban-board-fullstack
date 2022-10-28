@@ -27,11 +27,11 @@ const state = reactive<{
 });
 
 const updateBoard = async () => {
+  console.log(state.newColumns);
   try {
     for await (const column of state.deletedColumns) {
       await deleteColumn(column.id);
     }
-
     for await (const newColumn of state.newColumns) {
       await addColumn(newColumn);
     }
@@ -71,7 +71,7 @@ const addColumn = async (columnName: string) => {
     <div>
       <label class="text-dark-lines text-sm dark:text-white"> Columns </label>
       <div
-        v-for="(column, index) in state.localBoard.Columns.slice().reverse()"
+        v-for="column in state.localBoard.Columns.slice().reverse()"
         :key="column.id"
         class="flex justify-between items-center space-x-4"
       >
@@ -79,7 +79,10 @@ const addColumn = async (columnName: string) => {
         <button
           @click="
             state.deletedColumns.push(column);
-            state.localBoard.Columns.splice(index, 1);
+            state.localBoard.Columns.splice(
+              state.localBoard.Columns.indexOf(column),
+              1
+            );
           "
           class="text-red text-sm text-center hover:underline"
         >

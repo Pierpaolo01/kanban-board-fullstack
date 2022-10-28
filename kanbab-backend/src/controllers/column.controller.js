@@ -12,8 +12,6 @@ columnModel.associate({Board: boardModel});
 boardModel.associate({User: userModel, Column: columnModel});
 
 const deleteColumn = async (req, res) => {
-    console.log(req.params)
-    console.log(req.path)
     try {
         const column = await columnModel.findOne({
             where: {
@@ -36,7 +34,32 @@ const deleteColumn = async (req, res) => {
     }
 }
 
+const addColumn = async (req, res) => {
+    try {
+        const board = await boardModel.findOne({
+            where: {
+                id: req.params.boardId
+            }
+        });
+
+        if (!board) {
+            res.status(404).json({data: 'no board found'});
+            return;
+        }
+
+        board.createColumn({
+            name: req.body.name,
+        });
+
+        res.status(201).json();
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 
 module.exports = {
-    deleteColumn
+    deleteColumn,
+    addColumn
 }
