@@ -8,8 +8,10 @@ import { computed, onMounted, reactive } from "vue";
 import KanbanService from "../services/kanbanService";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import KanbanModalBoardCreate from "../components/modals/KanbanModalBoardCreate.vue";
+import KanbanModalUpdateBoard from "../components/modals/KanbanModalUpdateBoard.vue";
 import KanbanModal from "../components/modals/KanbanModal.vue";
 import { useRoute, useRouter } from "vue-router";
+import IconEdit from "@/components/icons/IconEdit.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -19,11 +21,13 @@ const state = reactive<{
   boards: Array<KanbanBoard>;
   selectedBoard: KanbanBoard | null;
   openCreateBoardModal: boolean;
+  openEditBoardModal: boolean;
 }>({
   toggleMobileNav: false,
   boards: [],
   openCreateBoardModal: false,
   selectedBoard: null,
+  openEditBoardModal: false,
 });
 
 const getAllBoards = async () => {
@@ -42,13 +46,10 @@ const getAllBoards = async () => {
   }
 };
 
-const gsCurrentBoard = computed({
-  get() {
-    return state.boards.find(
-      (board) => board.id === Number(route.params.boardId)
-    );
-  },
-  set() {},
+const gsCurrentBoard = computed(() => {
+  return state.boards.find(
+    (board) => board.id === Number(route.params.boardId)
+  );
 });
 
 onMounted(() => getAllBoards());
@@ -69,25 +70,41 @@ onMounted(() => getAllBoards());
               kanban
             </h1>
           </div>
-          <h1
-            class="text-lg cursor-pointer text-center text-black dark:text-white flex items-center"
-            @click="state.toggleMobileNav = !state.toggleMobileNav"
-          >
-            {{ gsCurrentBoard ? gsCurrentBoard.name : "" }}
-            <IconChevronDown
-              class="ml-2"
-              :class="state.toggleMobileNav ? 'rotate-180' : ''"
-            />
-          </h1>
+          <div class="flex text-black dark:text-white">
+            <h1
+              class="text-lg cursor-pointer text-center flex items-center"
+              @click="state.toggleMobileNav = !state.toggleMobileNav"
+            >
+              {{ gsCurrentBoard ? gsCurrentBoard.name : "" }}
+              <IconChevronDown
+                class="ml-2"
+                :class="state.toggleMobileNav ? 'rotate-180' : ''"
+              />
+            </h1>
+            <button
+              class="ml-4"
+              @click="state.openEditBoardModal = !state.openEditBoardModal"
+            >
+              <IconEdit />
+            </button>
+          </div>
+
           <TheMobileSidebar
             v-if="state.toggleMobileNav"
-            class="absolute top-16 left-8"
+            :boards="state.boards"
+            class="absolute top-16 left-8 z-50"
           />
         </div>
         <h1
           class="text-lg hidden md:flex text-black dark:text-white items-center"
         >
           {{ gsCurrentBoard ? gsCurrentBoard.name : "" }}
+          <button
+            class="ml-4"
+            @click="state.openEditBoardModal = !state.openEditBoardModal"
+          >
+            <IconEdit />
+          </button>
         </h1>
         <div>
           <KanbanButton v-if="route.name === 'board'" text="+" />
@@ -97,8 +114,8 @@ onMounted(() => getAllBoards());
         <slot />
       </div>
     </div>
-    <div
-      class="min-w-[260px] text-gray-medium bg-white dark:bg-dark-gray h-full"
+    <aside
+      class="min-w-[260px] text-gray-medium bg-white dark:bg-dark-gray h-full hidden md:block"
     >
       <div
         class="flex items-center space-x-4 p-4 h-16 border-r border-light-lines dark:border-dark-lines"
@@ -133,13 +150,24 @@ onMounted(() => getAllBoards());
           <span class="text-purple text-md">+ create board</span>
         </button>
       </div>
-    </div>
+    </aside>
   </div>
   <kanban-modal v-model="state.openCreateBoardModal" :has-click-away="false">
     <KanbanModalBoardCreate
       @boardCreated="
         getAllBoards();
         state.openCreateBoardModal = false;
+      "
+    />
+  </kanban-modal>
+  <kanban-modal v-model="state.openEditBoardModal" :has-click-away="true">
+    <KanbanModalUpdateBoard
+      v-if="state.openEditBoardModal"
+      :board="gsCurrentBoard"
+      @boardUpdated="
+        getAllBoards();
+        state.openEditBoardModal = false;
+        router.go(0);
       "
     />
   </kanban-modal>

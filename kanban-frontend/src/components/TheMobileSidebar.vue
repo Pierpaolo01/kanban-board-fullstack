@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import IconBoard from "../assets/icons/IconBoard.vue";
+import type { KanbanBoard } from "@/types/kanbanBoard";
+defineProps<{
+  boards: Array<KanbanBoard>;
+}>();
 </script>
 
 <template>
@@ -10,14 +14,14 @@ import IconBoard from "../assets/icons/IconBoard.vue";
       <h1 class="uppercase mb-5 text-sm">all boards (6)</h1>
       <div>
         <router-link
-          v-for="(board, index) in 6"
-          :key="board"
-          to="TODO"
+          v-for="board in boards"
+          :key="board.id"
+          :to="{ name: 'board', params: { boardId: board.id } }"
           class="-ml-6 pl-6 text-md py-3 flex rounded-r-full items-center space-x-4 cursor-pointer hover:text-white hover:bg-purple-hover"
           active-class="bg-purple text-white"
         >
           <IconBoard />
-          <span> board {{ index }} </span>
+          <span> {{ board.name }} </span>
         </router-link>
       </div>
       <button class="py-3 flex items-center space-x-4">
