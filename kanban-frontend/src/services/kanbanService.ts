@@ -28,7 +28,11 @@ export default class KanbanService {
     return axios.put(`/api/boards/${boardId}`, payload);
   }
 
-  public static deleteColumn(id: number) {
-    return axios.delete("todo");
+  public static deleteColumn(boardId: number, columnId: number) {
+    return axios.delete(`/api/boards/${boardId}/column/${columnId}`);
+  }
+
+  public static addNewColumn(boardId: number, name: string) {
+    return axios.post(`/api/board/${boardId}/column`, { name });
   }
 }

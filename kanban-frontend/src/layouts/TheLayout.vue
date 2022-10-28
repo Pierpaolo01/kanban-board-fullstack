@@ -163,10 +163,11 @@ onMounted(() => getAllBoards());
   <kanban-modal v-model="state.openEditBoardModal" :has-click-away="true">
     <KanbanModalUpdateBoard
       v-if="state.openEditBoardModal"
-      :board="{ ...gsCurrentBoard }"
+      :board="gsCurrentBoard"
       @boardUpdated="
         getAllBoards();
         state.openEditBoardModal = false;
+        router.go(0);
       "
     />
   </kanban-modal>
