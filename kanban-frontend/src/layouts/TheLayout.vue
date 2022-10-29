@@ -110,7 +110,7 @@ onMounted(() => getAllBoards());
           <KanbanButton v-if="route.name === 'board'" text="+" />
         </div>
       </header>
-      <div class="p-6 h-full overflow-x-scroll">
+      <div class="p-6">
         <slot />
       </div>
     </div>

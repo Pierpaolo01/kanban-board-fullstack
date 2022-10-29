@@ -36,7 +36,7 @@ onMounted(async () => fetchBoard());
   <div class="overflow-x-auto">
     <div
       v-if="state.board"
-      class="flex space-x-12 text-gray-medium max-w-[0px]"
+      class="flex space-x-12 text-gray-medium max-w-[0px] pb-6"
     >
       <div v-for="column in state.board.Columns" :key="column.id">
         <div>
