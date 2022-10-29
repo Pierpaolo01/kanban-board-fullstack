@@ -3,8 +3,7 @@ import { useRoute } from "vue-router";
 import KanbanService from "@/services/kanbanService";
 import { onMounted, reactive } from "vue";
 import type { KanbanBoard } from "@/types/kanbanBoard";
-//@ts-ignore
-// import Draggable from "vue3-draggable";
+import type { KanbanTask } from "@/types/kanbanTask";
 
 const route = useRoute();
 
@@ -18,6 +17,26 @@ const fetchBoard = async () => {
   try {
     const response = await KanbanService.getBoard(String(route.params.boardId));
     state.board = response.data.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const startDragEvent = (event: any, task: KanbanTask) => {
+  event.dataTransfer.dropEffect = "move";
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData("taskId", String(task.id));
+};
+
+const onDropEvent = (event: any, columnId: number) => {
+  const taskId = event.dataTransfer.getData("taskId");
+  moveTask(taskId, columnId);
+};
+
+const moveTask = async (taskId: number, newColumnId: number) => {
+  try {
+    await KanbanService.moveTask(state.board!.id, taskId, newColumnId);
+    await fetchBoard();
   } catch (e) {
     console.log(e);
   }
@@ -38,8 +57,14 @@ onMounted(async () => fetchBoard());
       v-if="state.board"
       class="flex space-x-12 text-gray-medium max-w-[0px] pb-6"
     >
-      <div v-for="column in state.board.Columns" :key="column.id">
-        <div>
+      <div
+        v-for="column in state.board.Columns"
+        :key="column.id"
+        @drop="onDropEvent($event, column.id)"
+        @dragenter.prevent
+        @dragover.prevent
+      >
+        <div class="w-72">
           <h1 class="flex items-center mb-6">
             <span
               class="w-4 h-4 rounded-full mr-2"
@@ -47,14 +72,19 @@ onMounted(async () => fetchBoard());
             />
             {{ column.name }} (420)
           </h1>
-          <div class="w-72 p-6 bg-white">fake subtask</div>
-          <!--        <draggable v-model="column.subtask">-->
-          <!--          <template v-slot:item="{ item }">-->
-          <!--            <div>-->
-          <!--              {{ item }}-->
-          <!--            </div>-->
-          <!--          </template>-->
-          <!--        </draggable>-->
+          <!--          <draggable v-model="column.Tasks" class="w-72 h-72">-->
+          <!--            <template v-slot:item="{ item }">-->
+          <div
+            class="w-72 p-6 bg-white"
+            v-for="task in column.Tasks"
+            :key="task.id"
+            draggable="true"
+            @dragstart="startDragEvent($event, task)"
+          >
+            {{ task.title }}
+          </div>
+          <!--            </template>-->
+          <!--          </draggable>-->
         </div>
       </div>
     </div>

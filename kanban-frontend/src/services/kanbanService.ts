@@ -30,11 +30,11 @@ export default class KanbanService {
   }
 
   public static deleteColumn(boardId: number, columnId: number) {
-    return axios.delete(`/api/boards/${boardId}/column/${columnId}`);
+    return axios.delete(`/api/boards/${boardId}/columns/${columnId}`);
   }
 
   public static addNewColumn(boardId: number, name: string) {
-    return axios.post(`/api/boards/${boardId}/column`, { name });
+    return axios.post(`/api/boards/${boardId}/columns`, { name });
   }
 
   public static addTask(
@@ -42,5 +42,13 @@ export default class KanbanService {
     newTask: KanbanTaskForm
   ): AxiosPromise<ApiResponse<KanbanTask>> {
     return axios.post(`/api/boards/${boardId}/tasks`, newTask);
+  }
+
+  public static moveTask(
+    boardId: number,
+    taskId: number,
+    columnId: number
+  ): AxiosPromise<ApiResponse<KanbanTask>> {
+    return axios.post(`api/boards/${boardId}/tasks/${taskId}`, { columnId });
   }
 }
