@@ -3,7 +3,6 @@ const board = require('../models/board.js');
 const task = require('../models/task.js');
 const column = require('../models/column.js');
 const user = require("../models/user");
-const {Json} = require("sequelize/lib/utils");
 
 const columnModel = column(db.sequelize, db.Sequelize.DataTypes);
 const boardModel = board(db.sequelize, db.Sequelize.DataTypes);
@@ -28,9 +27,6 @@ const createTask = async (req, res)=> {
 
         const [column] = await board.getColumns();
 
-        console.log(req.body.subtasks)
-        console.log(JSON.stringify(req.body.subtasks))
-
         const newTask = await taskModel.create({
             title: req.body.title,
             description: req.body.description,
@@ -44,6 +40,65 @@ const createTask = async (req, res)=> {
     }
 }
 
+const updateTask = async (req, res) => {
+    try {
+
+        const task = await taskModel.findOne({
+            where: {
+                id: req.params.taskId
+            }
+        });
+
+        if (!task) {
+            res.status(404).json('no task found')
+            return;
+        }
+
+        await task.update({
+            title: req.body.title,
+            description: req.body.description,
+            subtasks: req.body.subtasks,
+        });
+
+        res.status(204).json({data: task})
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+const moveTask = async (req, res) => {
+    try {
+        const task = await taskModel.findOne({
+            where: {
+                id: req.params.taskId
+            }
+        });
+
+        const column = await columnModel.findOne({
+            where: {
+                id: req.body.columnId
+            }
+        });
+
+        if (!column || column.BoardId !== Number(req.params.boardId)) {
+            res.status(422).json('Moved task to invalid column');
+            return
+        }
+
+        await task.update({
+            ColumnId: req.body.columnId
+        });
+
+        res.status(200).json({data: task});
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 module.exports = {
-    createTask
+    createTask,
+    updateTask,
+    moveTask,
 }
