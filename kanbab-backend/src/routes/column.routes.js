@@ -11,8 +11,4 @@ columnRoutes = Router();
 columnRoutes.delete('/:boardId/columns/:columnId', isAuthenticated, deleteColumn);
 columnRoutes.post('/:boardId/columns', isAuthenticated, addColumn);
 
-columnRoutes.post('/:boardId/columns/task', isAuthenticated, createTask);
-
-
-
 module.exports = columnRoutes;

@@ -25,13 +25,11 @@ const createTask = async (req, res)=> {
             res.status(404).json({data: 'no board found'})
         }
 
-        const [column] = await board.getColumns();
-
         const newTask = await taskModel.create({
             title: req.body.title,
             description: req.body.description,
             subtasks: JSON.stringify(req.body.subtasks),
-            ColumnId: column.id
+            ColumnId: req.body.column.id
         });
 
         res.status(420).json({newTask})

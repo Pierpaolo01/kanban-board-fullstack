@@ -2,13 +2,19 @@ const board = require('../models/board.js');
 const user = require('../models/user.js');
 const column = require('../models/column.js');
 const db = require('../models/index.js');
+const task = require("../models/task");
 
 const userModel = user(db.sequelize, db.Sequelize.DataTypes);
 const boardModel = board(db.sequelize, db.Sequelize.DataTypes);
 const columnModel = column(db.sequelize, db.Sequelize.DataTypes);
+const taskModel = task(db.sequelize, db.Sequelize.DataTypes);
+
 
 userModel.associate({Board: boardModel});
 boardModel.associate({User: userModel, Column: columnModel});
+taskModel.associate({Column: columnModel})
+columnModel.associate({Board: boardModel, Task: taskModel});
+
 
 const createBoard = async (req, res) => {
     const {userId} = req;
@@ -42,7 +48,10 @@ const getBoard = async (req, res) => {
             id: req.params.boardId,
             userId: req.userId
         },
-        include: {model: columnModel}
+        include: {
+            model: columnModel,
+            include: {model: taskModel}
+        }
     });
 
     if (!board) {

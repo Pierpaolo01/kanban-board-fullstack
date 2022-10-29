@@ -3,6 +3,7 @@ import type { AxiosPromise } from "axios";
 import type { ApiResponse } from "@/types/apiResponse";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import type { KanbanBoardForm } from "@/types/kanbanBoard";
+import type { KanbanTask, KanbanTaskForm } from "@/types/kanbanTask";
 
 export default class KanbanService {
   public static getAllBoards(): AxiosPromise<ApiResponse<Array<KanbanBoard>>> {
@@ -34,5 +35,12 @@ export default class KanbanService {
 
   public static addNewColumn(boardId: number, name: string) {
     return axios.post(`/api/boards/${boardId}/column`, { name });
+  }
+
+  public static addTask(
+    boardId: number,
+    newTask: KanbanTaskForm
+  ): AxiosPromise<ApiResponse<KanbanTask>> {
+    return axios.post(`/api/boards/${boardId}/tasks`, newTask);
   }
 }
