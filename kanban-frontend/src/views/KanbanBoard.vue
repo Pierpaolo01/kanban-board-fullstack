@@ -4,13 +4,21 @@ import KanbanService from "@/services/kanbanService";
 import { onMounted, reactive } from "vue";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import type { KanbanTask } from "@/types/kanbanTask";
+import KanbanModal from "@/components/modals/KanbanModal.vue";
+import KanbanViewDetailedTask from "@/components/modals/KanbanViewDetailedTask.vue";
+import IconEdit from "@/components/icons/IconEdit.vue";
+import KanbanModalCreateUpdateTask from "@/components/modals/KanbanModalCreateUpdateTask.vue";
 
 const route = useRoute();
 
 const state = reactive<{
   board: KanbanBoard | null;
+  detailedTask: KanbanTask | null;
+  showEditTaskModal: boolean;
 }>({
   board: null,
+  detailedTask: null,
+  showEditTaskModal: false,
 });
 
 const fetchBoard = async () => {
@@ -64,29 +72,55 @@ onMounted(async () => fetchBoard());
         @dragenter.prevent
         @dragover.prevent
       >
-        <div class="w-72">
+        <div class="w-72 space-y-4">
           <h1 class="flex items-center mb-6">
             <span
               class="w-4 h-4 rounded-full mr-2"
               :style="{ background: randomHex() }"
             />
-            {{ column.name }} (420)
+            {{ column.name }} ({{ column.Tasks.length }})
           </h1>
-          <!--          <draggable v-model="column.Tasks" class="w-72 h-72">-->
-          <!--            <template v-slot:item="{ item }">-->
+
           <div
-            class="w-72 p-6 bg-white"
+            class="p-6 bg-white rounded-lg shadow-lg relative"
             v-for="task in column.Tasks"
             :key="task.id"
             draggable="true"
             @dragstart="startDragEvent($event, task)"
           >
-            {{ task.title }}
+            <IconEdit
+              @click.self="state.showEditTaskModal = !state.showEditTaskModal"
+              class="absolute top-4 right-4 w-4 h-4 cursor-pointer"
+            />
+            <p
+              class="text-md text-black mb-2 cursor-pointer"
+              @click="state.detailedTask = task"
+            >
+              {{ task.title }}
+            </p>
+            <span class="text-sm">
+              {{ task.subtasks.filter((sub) => sub.isDone === true).length }}/{{
+                task.subtasks.length
+              }}
+              of subtasks
+            </span>
           </div>
-          <!--            </template>-->
-          <!--          </draggable>-->
         </div>
       </div>
     </div>
   </div>
+  <KanbanModal
+    :model-value="!!state.detailedTask"
+    @update:modelValue="state.detailedTask = null"
+    :has-click-away="true"
+  >
+    <KanbanViewDetailedTask
+      v-model="state.detailedTask"
+      @refreshBoard="fetchBoard"
+    />
+  </KanbanModal>
+
+  <KanbanModal v-model="state.showEditTaskModal" :has-click-away="true">
+    <KanbanModalCreateUpdateTask v-model="state.detailedTask" />
+  </KanbanModal>
 </template>

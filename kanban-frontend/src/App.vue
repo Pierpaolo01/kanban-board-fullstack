@@ -9,5 +9,6 @@ import { RouterView } from "vue-router";
 <style>
 #app {
   height: 100vh;
+  color: black;
 }
 </style>
