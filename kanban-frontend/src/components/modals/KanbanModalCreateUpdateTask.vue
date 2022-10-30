@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import KanbanInputTextArea from "../KanbanInputTextArea.vue";
 import KanbanInputText from "../KanbanInputText.vue";
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import KanbanDropdown from "../../components/KanbanDropdown.vue";
 import KanbanButton from "../../components/KanbanButton.vue";
 import type { KanbanColumn } from "@/types/kanbanColumn";
-import type { Subtask } from "@/types/kanbanTask";
+import type { KanbanTask, Subtask } from "@/types/kanbanTask";
 import KanbanService from "@/services/kanbanService";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 
 const props = withDefaults(
   defineProps<{
-    // task: any;
     type?: "create" | "update";
     board: KanbanBoard;
+    task: KanbanTask;
   }>(),
   {
     type: "create",
@@ -42,6 +42,23 @@ const createTask = async () => {
     console.log(e);
   }
 };
+
+const updateTask = async () => {
+  try {
+    await KanbanService.updateTask(props.board.id, props.task.id, form);
+    emits("close");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+onMounted(() => {
+  if (props.type === "update") {
+    form.title = props.task.title;
+    form.description = props.task.description;
+    form.subtasks = props.task.subtasks;
+  }
+});
 </script>
 
 <template>
@@ -81,7 +98,11 @@ const createTask = async () => {
         @click="form.subtasks.push({ name: '', isDone: false })"
       />
     </div>
-    <kanban-dropdown :selected-text="form.column.name" label="Status">
+    <kanban-dropdown
+      :selected-text="form.column.name"
+      label="Status"
+      v-if="type === 'create'"
+    >
       <ul>
         <li
           v-for="column in board.Columns"
@@ -94,7 +115,7 @@ const createTask = async () => {
     </kanban-dropdown>
     <KanbanButton
       :text="type === 'create' ? 'Create task' : 'Edit task'"
-      @click="createTask"
+      @click="type === 'create' ? createTask() : updateTask()"
     />
   </div>
 </template>

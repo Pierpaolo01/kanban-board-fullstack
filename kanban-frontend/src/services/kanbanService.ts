@@ -44,6 +44,14 @@ export default class KanbanService {
     return axios.post(`/api/boards/${boardId}/tasks`, newTask);
   }
 
+  public static updateTask(
+    boardId: number,
+    taskId: number,
+    task: KanbanTaskForm
+  ): AxiosPromise<ApiResponse<KanbanTask>> {
+    return axios.put(`/api/boards/${boardId}/tasks/${taskId}`, task);
+  }
+
   public static moveTask(
     boardId: number,
     taskId: number,

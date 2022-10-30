@@ -181,7 +181,7 @@ onMounted(() => getAllBoards());
   <kanban-modal v-model="state.openAddTaskModal">
     <KanbanModalCreateUpdateTask
       :board="gsCurrentBoard"
-      type="update"
+      type="create"
       @close="
         state.openAddTaskModal = false;
         router.go(0);

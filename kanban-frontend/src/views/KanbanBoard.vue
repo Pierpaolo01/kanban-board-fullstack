@@ -14,11 +14,11 @@ const route = useRoute();
 const state = reactive<{
   board: KanbanBoard | null;
   detailedTask: KanbanTask | null;
-  showEditTaskModal: boolean;
+  editTask: KanbanTask | null;
 }>({
   board: null,
   detailedTask: null,
-  showEditTaskModal: false,
+  editTask: null,
 });
 
 const fetchBoard = async () => {
@@ -88,12 +88,14 @@ onMounted(async () => fetchBoard());
             draggable="true"
             @dragstart="startDragEvent($event, task)"
           >
-            <IconEdit
-              @click.self="state.showEditTaskModal = !state.showEditTaskModal"
-              class="absolute top-4 right-4 w-4 h-4 cursor-pointer"
-            />
+            <div
+              class="absolute top-0 right-0 pt-4 pr-4 cursor-pointer"
+              @click="state.editTask = task"
+            >
+              <IconEdit class="w-4 h-4" />
+            </div>
             <p
-              class="text-md text-black mb-2 cursor-pointer"
+              class="text-md text-black mb-2 cursor-pointer w-fit"
               @click="state.detailedTask = task"
             >
               {{ task.title }}
@@ -120,7 +122,20 @@ onMounted(async () => fetchBoard());
     />
   </KanbanModal>
 
-  <KanbanModal v-model="state.showEditTaskModal" :has-click-away="true">
-    <KanbanModalCreateUpdateTask v-model="state.detailedTask" />
+  <KanbanModal
+    :model-value="!!state.editTask"
+    @update:modelValue="state.editTask = null"
+    :has-click-away="true"
+  >
+    <KanbanModalCreateUpdateTask
+      v-model="state.detailedTask"
+      type="update"
+      :task="state.editTask"
+      :board="state.board"
+      @close="
+        state.editTask = null;
+        fetchBoard();
+      "
+    />
   </KanbanModal>
 </template>
