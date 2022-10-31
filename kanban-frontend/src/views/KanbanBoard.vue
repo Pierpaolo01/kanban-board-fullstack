@@ -53,6 +53,7 @@ const moveTask = async (taskId: number, newColumnId: number) => {
 const randomHex = () => {
   return `#${Math.floor(Math.random() * 0xffffff)
     .toString(16)
+    //@ts-ignore
     .padEnd(6, "0")}`;
 };
 
@@ -117,6 +118,7 @@ onMounted(async () => fetchBoard());
     :has-click-away="true"
   >
     <KanbanViewDetailedTask
+      v-if="state.detailedTask"
       v-model="state.detailedTask"
       @refreshBoard="fetchBoard"
     />
@@ -128,7 +130,7 @@ onMounted(async () => fetchBoard());
     :has-click-away="true"
   >
     <KanbanModalCreateUpdateTask
-      v-model="state.detailedTask"
+      v-if="state.editTask && state.board"
       type="update"
       :task="state.editTask"
       :board="state.board"

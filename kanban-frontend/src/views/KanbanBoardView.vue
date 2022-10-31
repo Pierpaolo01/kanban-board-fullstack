@@ -6,6 +6,6 @@ const route = useRoute();
 
 <template>
   <the-layout>
-    <RouterView :key="route.params.boardId" />
+    <RouterView :key="String(route.params.boardId)" />
   </the-layout>
 </template>

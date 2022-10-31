@@ -13,7 +13,7 @@ const props = withDefaults(
   defineProps<{
     type?: "create" | "update";
     board: KanbanBoard;
-    task: KanbanTask;
+    task?: KanbanTask;
   }>(),
   {
     type: "create",
@@ -45,7 +45,7 @@ const createTask = async () => {
 
 const updateTask = async () => {
   try {
-    await KanbanService.updateTask(props.board.id, props.task.id, form);
+    await KanbanService.updateTask(props.board.id, props.task!.id, form);
     emits("close");
   } catch (e) {
     console.log(e);
@@ -53,7 +53,7 @@ const updateTask = async () => {
 };
 
 onMounted(() => {
-  if (props.type === "update") {
+  if (props.task && props.type === "update") {
     form.title = props.task.title;
     form.description = props.task.description;
     form.subtasks = props.task.subtasks;

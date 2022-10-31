@@ -169,7 +169,7 @@ onMounted(() => getAllBoards());
   </kanban-modal>
   <kanban-modal v-model="state.openEditBoardModal" :has-click-away="true">
     <KanbanModalUpdateBoard
-      v-if="state.openEditBoardModal"
+      v-if="state.openEditBoardModal && gsCurrentBoard"
       :board="gsCurrentBoard"
       @boardUpdated="
         getAllBoards();
@@ -180,6 +180,7 @@ onMounted(() => getAllBoards());
   </kanban-modal>
   <kanban-modal v-model="state.openAddTaskModal">
     <KanbanModalCreateUpdateTask
+      v-if="gsCurrentBoard"
       :board="gsCurrentBoard"
       type="create"
       @close="
