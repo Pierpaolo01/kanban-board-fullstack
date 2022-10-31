@@ -1,7 +1,6 @@
 const {Router} = require('express');
 
 const { deleteColumn, addColumn } = require("../controllers/column.controller.js");
-const { createTask } = require("../controllers/task.controller.js");
 
 const {isAuthenticated} = require("../middleware/auth.middleware");
 

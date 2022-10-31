@@ -1,7 +1,10 @@
 const express = require('express');
 const router = require('./routes/index.routes.js');
+const helmet = require("helmet");
 
 app = express();
+
+app.use(helmet());
 
 app.use(express.json());
 
@@ -14,6 +17,6 @@ app.use((req, res, next) => {
 
 app.use('/api', router);
 
-app.listen(3000, () => {
-    console.log('listening on: localhost:3000')
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`listening on: ${process.env.PORT || 3000}`)
 });
