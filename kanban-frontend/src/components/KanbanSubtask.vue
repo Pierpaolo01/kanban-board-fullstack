@@ -7,7 +7,7 @@ withDefaults(
   {}
 );
 
-const emits = defineEmits(["unCheck"]);
+const emits = defineEmits(["toggle"]);
 </script>
 
 <template>
@@ -18,12 +18,13 @@ const emits = defineEmits(["unCheck"]);
       class="h-4 w-4"
       type="checkbox"
       :checked="isChecked"
-      @input="emits('unCheck')"
+      @input="emits('toggle')"
     />
     <span
       class="text-sm text-black dark:text-white"
       :class="isChecked ? 'line-through' : ''"
-      >{{ text }}</span
     >
+      {{ text }}
+    </span>
   </div>
 </template>

@@ -25,16 +25,14 @@ const createTask = async (req, res)=> {
             res.status(404).json({data: 'no board found'})
         }
 
-        const [column] = await board.getColumns();
-
         const newTask = await taskModel.create({
             title: req.body.title,
             description: req.body.description,
-            subtasks: JSON.stringify(req.body.subtasks),
-            ColumnId: column.id
+            subtasks: req.body.subtasks,
+            ColumnId: req.body.column.id
         });
 
-        res.status(420).json({newTask})
+        res.status(201).json({newTask})
     } catch (e) {
 
     }
@@ -97,8 +95,23 @@ const moveTask = async (req, res) => {
     }
 }
 
+const updateSubtasks = async (req, res) => {
+    const task = await taskModel.findOne({
+        where: {
+            id: req.params.taskId
+        }
+    });
+
+    await task.update({
+        subtasks: req.body.subtasks
+    });
+
+    res.status(204).json({data: task});
+}
+
 module.exports = {
     createTask,
     updateTask,
     moveTask,
+    updateSubtasks,
 }

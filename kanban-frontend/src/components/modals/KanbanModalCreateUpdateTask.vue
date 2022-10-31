@@ -1,32 +1,64 @@
 <script setup lang="ts">
 import KanbanInputTextArea from "../KanbanInputTextArea.vue";
 import KanbanInputText from "../KanbanInputText.vue";
-import KanbanMultipleInputs from "../../components/KanbanMultipleInputs.vue";
-import { reactive, ref } from "vue";
+import { onMounted, reactive } from "vue";
 import KanbanDropdown from "../../components/KanbanDropdown.vue";
 import KanbanButton from "../../components/KanbanButton.vue";
+import type { KanbanColumn } from "@/types/kanbanColumn";
+import type { KanbanTask, Subtask } from "@/types/kanbanTask";
+import KanbanService from "@/services/kanbanService";
+import type { KanbanBoard } from "@/types/kanbanBoard";
 
-withDefaults(defineProps<{ modelValue: any; type?: "create" | "update" }>(), {
-  type: "create",
-});
+const props = withDefaults(
+  defineProps<{
+    type?: "create" | "update";
+    board: KanbanBoard;
+    task: KanbanTask;
+  }>(),
+  {
+    type: "create",
+  }
+);
 
-const boardStatuses = ref<Array<string>>(["todo", "done"]);
+const emits = defineEmits(["close"]);
 
 const form = reactive<{
   title: string;
   description: string;
-  subtasks: Array<string>;
-  status: string;
+  subtasks: Array<Subtask>;
+  column: KanbanColumn;
 }>({
   title: "",
   description: "",
   subtasks: [],
-  status: boardStatuses.value[0],
+  column: props.board.Columns[0],
 });
 
-const updateSubtasks = ({ item, index }: { item: string; index: number }) => {
-  form.subtasks[index] = item;
+const createTask = async () => {
+  try {
+    await KanbanService.addTask(props.board.id, form);
+    emits("close");
+  } catch (e) {
+    console.log(e);
+  }
 };
+
+const updateTask = async () => {
+  try {
+    await KanbanService.updateTask(props.board.id, props.task.id, form);
+    emits("close");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+onMounted(() => {
+  if (props.type === "update") {
+    form.title = props.task.title;
+    form.description = props.task.description;
+    form.subtasks = props.task.subtasks;
+  }
+});
 </script>
 
 <template>
@@ -44,26 +76,46 @@ const updateSubtasks = ({ item, index }: { item: string; index: number }) => {
       placeholder="e.g. It's always good to take a coffee break. This 15minute break will recharge the batteries a little"
       v-model="form.description"
     />
-    <KanbanMultipleInputs
-      :model-value="form.subtasks"
-      label="Subtasks"
-      placeholder="e.g. Get coffee"
-      button-text="+ add new subtask"
-      @update:modelValue="updateSubtasks($event)"
-      @add="form.subtasks.push($event)"
-      @remove="form.subtasks.slice($event, 1)"
-    />
-    <kanban-dropdown :selected-text="form.status" label="Status">
+    <div>
+      <label class="text-dark-lines text-sm dark:text-white"> Subtasks </label>
+      <div
+        v-for="(subtask, index) in form.subtasks"
+        :key="index"
+        class="flex justify-between items-center space-x-4"
+      >
+        <KanbanInputText v-model="subtask.name" />
+        <button
+          @click="form.subtasks.splice(index, 1)"
+          class="text-red text-sm text-center hover:underline"
+        >
+          Delete
+        </button>
+      </div>
+      <KanbanButton
+        class="mt-4"
+        text="Add new column"
+        variant="secondary"
+        @click="form.subtasks.push({ name: '', isDone: false })"
+      />
+    </div>
+    <kanban-dropdown
+      :selected-text="form.column.name"
+      label="Status"
+      v-if="type === 'create'"
+    >
       <ul>
         <li
-          v-for="status in boardStatuses"
-          :key="status"
-          @click="form.status = status"
+          v-for="column in board.Columns"
+          :key="column.id"
+          @click="form.column = column"
         >
-          {{ status }}
+          {{ column.name }}
         </li>
       </ul>
     </kanban-dropdown>
-    <KanbanButton :text="type === 'create' ? 'Create task' : 'Edit task'" />
+    <KanbanButton
+      :text="type === 'create' ? 'Create task' : 'Edit task'"
+      @click="type === 'create' ? createTask() : updateTask()"
+    />
   </div>
 </template>

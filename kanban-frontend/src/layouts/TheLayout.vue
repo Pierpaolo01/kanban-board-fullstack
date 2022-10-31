@@ -12,6 +12,7 @@ import KanbanModalUpdateBoard from "../components/modals/KanbanModalUpdateBoard.
 import KanbanModal from "../components/modals/KanbanModal.vue";
 import { useRoute, useRouter } from "vue-router";
 import IconEdit from "@/components/icons/IconEdit.vue";
+import KanbanModalCreateUpdateTask from "@/components/modals/KanbanModalCreateUpdateTask.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -22,12 +23,14 @@ const state = reactive<{
   selectedBoard: KanbanBoard | null;
   openCreateBoardModal: boolean;
   openEditBoardModal: boolean;
+  openAddTaskModal: boolean;
 }>({
   toggleMobileNav: false,
   boards: [],
   openCreateBoardModal: false,
   selectedBoard: null,
   openEditBoardModal: false,
+  openAddTaskModal: false,
 });
 
 const getAllBoards = async () => {
@@ -107,7 +110,11 @@ onMounted(() => getAllBoards());
           </button>
         </h1>
         <div>
-          <KanbanButton v-if="route.name === 'board'" text="+" />
+          <KanbanButton
+            v-if="route.name === 'board'"
+            text="+"
+            @click="state.openAddTaskModal = !state.openAddTaskModal"
+          />
         </div>
       </header>
       <div class="p-6">
@@ -167,6 +174,16 @@ onMounted(() => getAllBoards());
       @boardUpdated="
         getAllBoards();
         state.openEditBoardModal = false;
+        router.go(0);
+      "
+    />
+  </kanban-modal>
+  <kanban-modal v-model="state.openAddTaskModal">
+    <KanbanModalCreateUpdateTask
+      :board="gsCurrentBoard"
+      type="create"
+      @close="
+        state.openAddTaskModal = false;
         router.go(0);
       "
     />
