@@ -5,7 +5,7 @@ import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/kanban-board-fullstack/kanban-frontend",
+  base: "/kanban-board-fullstack/",
   plugins: [vue()],
   resolve: {
     alias: {
