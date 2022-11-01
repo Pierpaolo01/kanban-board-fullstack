@@ -18,7 +18,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "start": "node server.js"
+    "start": "vite --port $PORT"
   },
   "dependencies": {
     "axios": "^1.1.3",
