@@ -93,7 +93,7 @@ onMounted(() => {
       </div>
       <KanbanButton
         class="mt-4"
-        text="Add new column"
+        text="Add subtask"
         variant="secondary"
         @click="form.subtasks.push({ name: '', isDone: false })"
       />

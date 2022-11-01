@@ -75,6 +75,7 @@ onMounted(() => getAllBoards());
           </div>
           <div class="flex text-black dark:text-white">
             <h1
+              v-if="state.boards.length"
               class="text-lg cursor-pointer text-center flex items-center"
               @click="state.toggleMobileNav = !state.toggleMobileNav"
             >
@@ -85,6 +86,7 @@ onMounted(() => getAllBoards());
               />
             </h1>
             <button
+              v-if="gsCurrentBoard"
               class="ml-4"
               @click="state.openEditBoardModal = !state.openEditBoardModal"
             >
@@ -103,6 +105,7 @@ onMounted(() => getAllBoards());
         >
           {{ gsCurrentBoard ? gsCurrentBoard.name : "" }}
           <button
+            v-if="gsCurrentBoard"
             class="ml-4"
             @click="state.openEditBoardModal = !state.openEditBoardModal"
           >
@@ -112,13 +115,24 @@ onMounted(() => getAllBoards());
         <div>
           <KanbanButton
             v-if="route.name === 'board'"
-            text="+"
+            text="+ Add new task"
             @click="state.openAddTaskModal = !state.openAddTaskModal"
           />
         </div>
       </header>
       <div class="p-6">
-        <slot />
+        <div
+          v-if="!state.boards.length"
+          class="space-y-6 mt-[50%] max-w-[450px] mx-auto"
+        >
+          <h1 class="text-lg">You have no boards. Consider creating a board</h1>
+          <KanbanButton
+            class="mx-auto"
+            text="+ Add New Board"
+            @click="state.openCreateBoardModal = true"
+          />
+        </div>
+        <slot v-else />
       </div>
     </div>
     <aside

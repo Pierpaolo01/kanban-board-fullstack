@@ -6,10 +6,13 @@ import App from "./App.vue";
 import router from "./router";
 
 import "./assets/main.css";
+import * as process from "process";
 
 const app = createApp(App);
 
-axios.defaults.baseURL = "https://kanban-node-api.herokuapp.com";
+axios.defaults.baseURL = process.env.PORT
+  ? "https://kanban-node-api.herokuapp.com"
+  : "http://localhost:3000";
 
 axios.interceptors.request.use((request) => {
   const token = localStorage.getItem("token");

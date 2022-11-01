@@ -1,10 +1,10 @@
 const express = require('express');
 const router = require('./routes/index.routes.js');
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 app = express();
 
-app.use(helmet());
+// app.use(helmet());
 
 app.use(express.json());
 

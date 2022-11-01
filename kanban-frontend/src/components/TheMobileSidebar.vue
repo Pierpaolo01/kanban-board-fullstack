@@ -11,7 +11,7 @@ defineProps<{
     class="rounded-lg min-w-[264px] bg-white dark:bg-dark-gray text-gray-medium"
   >
     <div class="mt-2 p-6">
-      <h1 class="uppercase mb-5 text-sm">all boards (6)</h1>
+      <h1 class="uppercase mb-5 text-sm">all boards ({{ boards.length }})</h1>
       <div>
         <router-link
           v-for="board in boards"

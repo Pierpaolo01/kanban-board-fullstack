@@ -61,10 +61,10 @@ onMounted(async () => fetchBoard());
 </script>
 
 <template>
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto min-h-[1200px]">
     <div
       v-if="state.board"
-      class="flex space-x-12 text-gray-medium max-w-[0px] pb-6"
+      class="flex space-x-6 text-gray-medium min-w-[0px] pb-6"
     >
       <div
         v-for="column in state.board.Columns"
@@ -73,7 +73,7 @@ onMounted(async () => fetchBoard());
         @dragenter.prevent
         @dragover.prevent
       >
-        <div class="w-72 space-y-4">
+        <div class="w-72 space-y-4 p-4 bg-light-lines rounded-lg">
           <h1 class="flex items-center mb-6">
             <span
               class="w-4 h-4 rounded-full mr-2"
