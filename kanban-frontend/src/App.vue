@@ -4,6 +4,7 @@ import { RouterView } from "vue-router";
 
 <template>
   <RouterView />
+  <notifications class="mt-6 mr-6 text-md" />
 </template>
 
 <style>

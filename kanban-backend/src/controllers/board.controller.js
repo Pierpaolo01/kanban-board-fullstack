@@ -25,11 +25,16 @@ const createBoard = async (req, res) => {
         name: req.body.name,
     });
 
+    if (!req.body.columns.length) {
+        req.body.columns = ['backlog'];
+    }
+
     for await (const column of req.body.columns) {
         await board.createColumn({
             name: column,
         })
-    }
+    };
+
 
     const createdBoard = await boardModel.findOne({where: {id: board.id}, include: {model: columnModel}});
 

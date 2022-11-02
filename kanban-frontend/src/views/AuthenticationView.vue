@@ -6,8 +6,11 @@ import KanbanButton from "../components/KanbanButton.vue";
 import type { AuthenticationForm } from "@/types/authenticationForm";
 import UserService from "@/services/userService";
 import { useRouter } from "vue-router";
+import { useLoading } from "vue3-loading-overlay";
+import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
 
 const router = useRouter();
+const loader = useLoading();
 
 const authenticationForm = reactive<AuthenticationForm>({
   username: "",
@@ -25,12 +28,15 @@ const signUp = async () => {
 };
 
 const login = async () => {
+  loader.show();
   try {
     const response = await UserService.login(authenticationForm);
     localStorage.setItem("token", response.data.data);
     await router.push({ name: "boards" });
   } catch (e) {
     console.log(e);
+  } finally {
+    loader.hide();
   }
 };
 </script>
