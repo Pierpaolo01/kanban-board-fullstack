@@ -18,12 +18,15 @@ const authenticationForm = reactive<AuthenticationForm>({
 });
 
 const signUp = async () => {
+  loader.show();
   try {
     const response = await UserService.signUp(authenticationForm);
     localStorage.setItem("token", response.data.data);
     await router.push({ name: "boards" });
+    loader.hide();
   } catch (e) {
     console.log(e);
+    loader.hide();
   }
 };
 
@@ -32,10 +35,10 @@ const login = async () => {
   try {
     const response = await UserService.login(authenticationForm);
     localStorage.setItem("token", response.data.data);
+    loader.hide();
     await router.push({ name: "boards" });
   } catch (e) {
     console.log(e);
-  } finally {
     loader.hide();
   }
 };
