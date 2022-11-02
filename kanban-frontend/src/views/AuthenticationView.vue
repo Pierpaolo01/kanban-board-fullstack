@@ -22,8 +22,8 @@ const signUp = async () => {
   try {
     const response = await UserService.signUp(authenticationForm);
     localStorage.setItem("token", response.data.data);
-    await router.push({ name: "boards" });
     loader.hide();
+    await router.push({ name: "boards" });
   } catch (e) {
     console.log(e);
     loader.hide();
