@@ -6,11 +6,8 @@ import KanbanService from "../../services/kanbanService";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import type { KanbanColumn } from "@/types/kanbanColumn";
 import cloneDeep from "lodash.clonedeep";
-import { useLoading } from "vue3-loading-overlay";
-import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
 import { useNotification } from "@kyvg/vue3-notification";
 
-const loader = useLoading();
 const { notify } = useNotification();
 
 const emits = defineEmits(["boardUpdated"]);
@@ -34,7 +31,6 @@ const state = reactive<{
 });
 
 const updateBoard = async () => {
-  loader.show();
   try {
     for await (const column of state.deletedColumns) {
       await deleteColumn(column.id);
@@ -50,8 +46,6 @@ const updateBoard = async () => {
       type: "error",
       title: "Something went wrong updating board",
     });
-  } finally {
-    loader.hide();
   }
 };
 
