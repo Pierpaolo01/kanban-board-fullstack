@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite --port 8000",
     "build": "run-p type-check build-only",
-    "preview": "vite preview --port 4173",
+    "preview": "vite preview --port 4173 --env developasdsament",
     "test:e2e": "start-server-and-test preview http://localhost:4173/ 'cypress open --e2e'",
     "test:e2e:ci": "start-server-and-test preview http://localhost:4173/ 'cypress run --e2e'",
     "test:unit": "cypress open --component",
@@ -18,7 +18,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "start": "node server.js"
+    "start": "node server.js --env production"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^2.6.1",
