@@ -7,6 +7,9 @@ import KanbanService from "../../services/kanbanService";
 import type { KanbanBoardForm } from "@/types/kanbanBoard";
 import { useRouter } from "vue-router";
 import { useNotification } from "@kyvg/vue3-notification";
+import { useLoaderStore } from "@/stores/loadingStore";
+
+const loadingStore = useLoaderStore();
 
 const { notify } = useNotification();
 
@@ -20,6 +23,7 @@ const board = reactive<KanbanBoardForm>({
 });
 
 const createBoard = async () => {
+  loadingStore.startLoader();
   try {
     const response = await KanbanService.createBoard(board);
     notify({
@@ -36,6 +40,8 @@ const createBoard = async () => {
       type: "error",
       title: "Something went wrong with creating board",
     });
+  } finally {
+    loadingStore.stopLoader();
   }
 };
 </script>

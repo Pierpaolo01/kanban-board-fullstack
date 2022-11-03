@@ -19,6 +19,7 @@ axios.interceptors.request.use((request) => {
   const token = localStorage.getItem("token");
 
   request.headers!.Authorization = token ? `Bearer ${token}` : null;
+
   return request;
 });
 

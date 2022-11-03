@@ -9,6 +9,9 @@ import type { KanbanTask, Subtask } from "@/types/kanbanTask";
 import KanbanService from "@/services/kanbanService";
 import type { KanbanBoard } from "@/types/kanbanBoard";
 import { useNotification } from "@kyvg/vue3-notification";
+import { useLoaderStore } from "@/stores/loadingStore";
+
+const loadingStore = useLoaderStore();
 
 const { notify } = useNotification();
 
@@ -38,6 +41,7 @@ const form = reactive<{
 });
 
 const createTask = async () => {
+  loadingStore.startLoader();
   try {
     await KanbanService.addTask(props.board.id, form);
     emits("close");
@@ -50,10 +54,13 @@ const createTask = async () => {
       type: "error",
       title: "Something went wrong creating task",
     });
+  } finally {
+    loadingStore.stopLoader();
   }
 };
 
 const updateTask = async () => {
+  loadingStore.startLoader();
   try {
     await KanbanService.updateTask(props.board.id, props.task!.id, form);
     emits("close");
@@ -66,6 +73,8 @@ const updateTask = async () => {
       type: "error",
       title: "Something went wrong updating task",
     });
+  } finally {
+    loadingStore.stopLoader();
   }
 };
 

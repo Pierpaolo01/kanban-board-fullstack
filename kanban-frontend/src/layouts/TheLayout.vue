@@ -146,11 +146,11 @@ onMounted(() => getAllBoards());
           kanban
         </h1>
       </div>
-      <div class="mt-2 p-6">
+      <div class="mt-2 p-6 overflow-y-auto">
         <h1 class="uppercase mb-5 text-sm">
           all boards {{ state.boards.length }}
         </h1>
-        <div>
+        <div class="max-h-full">
           <router-link
             v-for="board in state.boards"
             :key="board.id"
