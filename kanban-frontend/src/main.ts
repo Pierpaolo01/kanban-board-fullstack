@@ -11,10 +11,7 @@ import "./assets/main.css";
 
 const app = createApp(App);
 
-axios.defaults.baseURL =
-  import.meta.env.NODE_ENV === "production"
-    ? "https://kanban-node-api.herokuapp.com"
-    : "http://localhost:3000";
+axios.defaults.baseURL = "https://kanban-node-api.herokuapp.com";
 
 axios.interceptors.request.use((request) => {
   const token = localStorage.getItem("token");
