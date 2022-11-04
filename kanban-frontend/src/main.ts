@@ -3,6 +3,7 @@ import { createPinia } from "pinia";
 import axios from "axios";
 import Notifications from "@kyvg/vue3-notification";
 import { notify } from "@kyvg/vue3-notification";
+import VueClickAway from "vue3-click-away";
 
 import App from "./App.vue";
 import router from "./router";
@@ -12,7 +13,7 @@ import "./assets/main.css";
 const app = createApp(App);
 
 axios.defaults.baseURL = "https://kanban-node-api.herokuapp.com";
-
+// axios.defaults.baseURL = "http://localhost:3000";
 axios.interceptors.request.use((request) => {
   const token = localStorage.getItem("token");
 
@@ -42,5 +43,6 @@ axios.interceptors.response.use(
 app.use(Notifications);
 app.use(createPinia());
 app.use(router);
+app.use(VueClickAway);
 
 app.mount("#app");

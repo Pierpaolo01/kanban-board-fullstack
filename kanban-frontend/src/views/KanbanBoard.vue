@@ -61,7 +61,7 @@ onMounted(async () => fetchBoard());
 </script>
 
 <template>
-  <div class="overflow-x-auto min-h-[1200px]">
+  <div class="overflow-x-auto">
     <div
       v-if="state.board"
       class="flex space-x-6 text-gray-medium min-w-[0px] pb-6"

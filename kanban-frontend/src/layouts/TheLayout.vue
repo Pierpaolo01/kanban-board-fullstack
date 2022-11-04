@@ -98,6 +98,8 @@ onMounted(() => getAllBoards());
             v-if="state.toggleMobileNav"
             :boards="state.boards"
             class="absolute top-16 left-8 z-50"
+            @close="state.toggleMobileNav = false"
+            @create-board="state.openCreateBoardModal = true"
           />
         </div>
         <h1
